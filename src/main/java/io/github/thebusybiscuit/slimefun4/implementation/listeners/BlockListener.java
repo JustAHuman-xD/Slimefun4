@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -257,7 +258,7 @@ public class BlockListener implements Listener {
         if (count >= Bukkit.getServer().getMaxChainedNeighborUpdates()) {
             return;
         }
-        BlockData blockData = block.getBlockData();
+        BlockState blockState = block.getState();
         block.setType(Material.AIR, false);
         for (BlockFace face : CARDINAL_BLOCKFACES) {
             if (!isSupported(block.getRelative(face).getBlockData(), block.getRelative(face))) {
@@ -268,7 +269,8 @@ public class BlockListener implements Listener {
                 checkForSensitiveBlocks(relative, ++count);
             }
         }
-        block.setBlockData(blockData, false);
+        blockState.update(true, false);
+
     }
 
     /**
